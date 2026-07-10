@@ -657,7 +657,7 @@
       </div>
       <div class="course-actions">
         <button class="btn btn-success btn-icon" data-action="edit"   data-id="${c.id}" aria-label="Edit ${esc(c.name)}">✏️ Edit</button>
-        <button class="btn btn-danger  btn-icon" data-action="delete" data-id="${c.id}" aria-label="Delete ${esc(c.name)}">🗑️ Remove</button>
+        <button class="btn btn-danger  btn-icon" data-action="delete" data-id="${c.id}" onclick="handleDelete('${c.id}')" aria-label="Delete ${esc(c.name)}">Remove</button>
       </div>`;
     return el;
   }
@@ -809,9 +809,18 @@
     else if (modalOverlay.classList.contains('active')) closeEdit();
   });
 
+  /* ── HANDLE DELETE EVENT (from onclick) ── */
+  document.addEventListener('handleDelete', e => openConfirm(e.detail.id));
+
   /* ── INIT ── */
   loadCourses();
 })();
+
+// Global function so onclick="handleDelete(id)" in card markup can call it
+function handleDelete(id) {
+  const event = new CustomEvent('handleDelete', { detail: { id } });
+  document.dispatchEvent(event);
+}
 </script>
 </body>
 </html>
